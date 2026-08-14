@@ -4,3 +4,8 @@ server:
 spring:
   application:
     name: booking-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5434/booking_db
+    username: eventflow
+    password: eventflow

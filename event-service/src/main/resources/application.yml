@@ -4,3 +4,8 @@ server:
 spring:
   application:
     name: event-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5433/event_db
+    username: eventflow
+    password: eventflow
