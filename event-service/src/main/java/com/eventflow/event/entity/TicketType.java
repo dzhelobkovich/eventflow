@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -45,4 +46,40 @@ public class TicketType {
 
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
+
+    @Version
+    @Column(nullable = false)
+    private long version;
+
+    public TicketType(
+            Event event,
+            String name,
+            BigDecimal price,
+            String currency,
+            int capacity,
+            Instant now
+    ) {
+        this.id = UUID.randomUUID();
+        this.event = event;
+        this.name = name;
+        this.price = price;
+        this.currency = currency;
+        this.capacity = capacity;
+        this.createdAt = now;
+        this.updatedAt = now;
+    }
+
+    public void update(
+            String name,
+            BigDecimal price,
+            String currency,
+            int capacity,
+            Instant now
+    ) {
+        this.name = name;
+        this.price = price;
+        this.currency = currency;
+        this.capacity = capacity;
+        this.updatedAt = now;
+    }
 }

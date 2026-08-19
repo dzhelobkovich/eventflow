@@ -6,6 +6,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,4 +47,58 @@ public class Event {
 
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
+
+    @Version
+    @Column(nullable = false)
+    private long version;
+
+    public Event(
+            String name,
+            String description,
+            String venue,
+            Instant startsAt,
+            Instant endsAt,
+            Instant now
+    ) {
+        this.id = UUID.randomUUID();
+        this.name = name;
+        this.description = description;
+        this.venue = venue;
+        this.startsAt = startsAt;
+        this.endsAt = endsAt;
+        this.status = EventStatus.DRAFT;
+        this.createdAt = now;
+        this.updatedAt = now;
+    }
+
+    public void updateDetails(
+            String name,
+            String description,
+            String venue,
+            Instant startsAt,
+            Instant endsAt,
+            Instant now
+    ) {
+        this.name = name;
+        this.description = description;
+        this.venue = venue;
+        this.startsAt = startsAt;
+        this.endsAt = endsAt;
+        this.updatedAt = now;
+    }
+
+    public void publish(Instant now) {
+        this.status = EventStatus.PUBLISHED;
+        this.updatedAt = now;
+    }
+
+    public void cancel(Instant now) {
+        this.status = EventStatus.CANCELLED;
+        this.updatedAt = now;
+    }
+
+    public void complete(Instant now) {
+        this.status = EventStatus.COMPLETED;
+        this.updatedAt = now;
+    }
 }
