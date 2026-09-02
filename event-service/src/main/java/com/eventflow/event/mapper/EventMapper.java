@@ -2,22 +2,15 @@ package com.eventflow.event.mapper;
 
 import com.eventflow.event.dto.EventResponse;
 import com.eventflow.event.entity.Event;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingConstants;
+import org.mapstruct.ReportingPolicy;
 
-@Component
-public class EventMapper {
+@Mapper(
+        componentModel = MappingConstants.ComponentModel.SPRING,
+        unmappedTargetPolicy = ReportingPolicy.ERROR
+)
+public interface EventMapper {
 
-    public EventResponse toResponse(Event event) {
-        return new EventResponse(
-                event.getId(),
-                event.getName(),
-                event.getDescription(),
-                event.getVenue(),
-                event.getStartsAt(),
-                event.getEndsAt(),
-                event.getStatus(),
-                event.getCreatedAt(),
-                event.getUpdatedAt()
-        );
-    }
+    EventResponse toResponse(Event event);
 }
