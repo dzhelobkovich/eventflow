@@ -2,21 +2,17 @@ package com.eventflow.event.mapper;
 
 import com.eventflow.event.dto.TicketTypeResponse;
 import com.eventflow.event.entity.TicketType;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants;
+import org.mapstruct.ReportingPolicy;
 
-@Component
-public class TicketTypeMapper {
+@Mapper(
+        componentModel = MappingConstants.ComponentModel.SPRING,
+        unmappedTargetPolicy = ReportingPolicy.ERROR
+)
+public interface TicketTypeMapper {
 
-    public TicketTypeResponse toResponse(TicketType ticketType) {
-        return new TicketTypeResponse(
-                ticketType.getId(),
-                ticketType.getEvent().getId(),
-                ticketType.getName(),
-                ticketType.getPrice(),
-                ticketType.getCurrency(),
-                ticketType.getCapacity(),
-                ticketType.getCreatedAt(),
-                ticketType.getUpdatedAt()
-        );
-    }
+    @Mapping(target = "eventId", source = "event.id")
+    TicketTypeResponse toResponse(TicketType ticketType);
 }

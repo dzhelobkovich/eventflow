@@ -17,11 +17,18 @@ repositories {
     mavenCentral()
 }
 
+val mapstructVersion = "1.6.3"
+val springdocVersion = "2.9.0"
+
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocVersion}")
     implementation("org.springframework.boot:spring-boot-starter-validation")
-
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+
+    implementation("org.mapstruct:mapstruct:$mapstructVersion")
+    annotationProcessor("org.mapstruct:mapstruct-processor:$mapstructVersion")
+    annotationProcessor("org.projectlombok:lombok-mapstruct-binding:0.2.0")
 
     runtimeOnly("org.postgresql:postgresql")
 
