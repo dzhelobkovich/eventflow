@@ -5,11 +5,14 @@ import com.eventflow.booking.dto.CreateBookingRequest;
 import com.eventflow.booking.service.BookingService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/bookings")
@@ -27,5 +30,15 @@ public class BookingController {
             @Valid @RequestBody CreateBookingRequest request
     ) {
         return bookingService.create(request);
+    }
+
+    @PostMapping("/{bookingId}/confirm")
+    public BookingResponse confirm(@PathVariable UUID bookingId) {
+        return bookingService.confirm(bookingId);
+    }
+
+    @PostMapping("/{bookingId}/cancel")
+    public BookingResponse cancel(@PathVariable UUID bookingId) {
+        return bookingService.cancel(bookingId);
     }
 }

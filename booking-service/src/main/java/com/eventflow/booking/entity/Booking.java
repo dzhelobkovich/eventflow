@@ -69,12 +69,7 @@ public class Booking {
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
-    public void addItem(
-            UUID ticketTypeId,
-            int quantity,
-            BigDecimal unitPrice,
-            String currency
-    ) {
+    public void addItem(UUID ticketTypeId, int quantity, BigDecimal unitPrice, String currency) {
         BookingItem item = BookingItem.builder()
                 .booking(this)
                 .ticketTypeId(ticketTypeId)
@@ -82,7 +77,21 @@ public class Booking {
                 .unitPrice(unitPrice)
                 .currency(currency)
                 .build();
-
         items.add(item);
+    }
+
+    public void confirm(Instant now) {
+        this.status = BookingStatus.CONFIRMED;
+        this.updatedAt = now;
+    }
+
+    public void cancel(Instant now) {
+        this.status = BookingStatus.CANCELLED;
+        this.updatedAt = now;
+    }
+
+    public void expire(Instant now) {
+        this.status = BookingStatus.EXPIRED;
+        this.updatedAt = now;
     }
 }
