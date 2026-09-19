@@ -10,26 +10,30 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.annotations.UuidGenerator;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Getter
+@Builder
 @Entity
 @Table(name = "bookings")
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Booking {
 
     @Id
-    @UuidGenerator
-    private UUID id;
+    @Builder.Default
+    private UUID id = UUID.randomUUID();
 
     @Column(name = "customer_id", nullable = false, updatable = false)
     private UUID customerId;
@@ -39,7 +43,8 @@ public class Booking {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
-    private BookingStatus status;
+    @Builder.Default
+    private BookingStatus status = BookingStatus.PENDING;
 
     @Column(name = "expires_at", nullable = false)
     private Instant expiresAt;
@@ -49,6 +54,7 @@ public class Booking {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @Builder.Default
     private List<BookingItem> items = new ArrayList<>();
 
     @Version
@@ -62,4 +68,21 @@ public class Booking {
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
+
+    public void addItem(
+            UUID ticketTypeId,
+            int quantity,
+            BigDecimal unitPrice,
+            String currency
+    ) {
+        BookingItem item = BookingItem.builder()
+                .booking(this)
+                .ticketTypeId(ticketTypeId)
+                .quantity(quantity)
+                .unitPrice(unitPrice)
+                .currency(currency)
+                .build();
+
+        items.add(item);
+    }
 }

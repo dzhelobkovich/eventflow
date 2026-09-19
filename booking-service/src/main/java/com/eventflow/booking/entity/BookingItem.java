@@ -8,22 +8,25 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.UuidGenerator;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
 @Getter
 @Entity
+@Builder(access = AccessLevel.PACKAGE)
 @Table(name = "booking_items")
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BookingItem {
 
     @Id
-    @UuidGenerator
-    private UUID id;
+    @Builder.Default
+    private UUID id = UUID.randomUUID();
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "booking_id", nullable = false, updatable = false)
