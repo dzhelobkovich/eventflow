@@ -157,7 +157,7 @@ public class BookingService {
     }
 
     private Booking findBooking(UUID bookingId) {
-        return bookingRepository.findWithItemsById(bookingId)
+        return bookingRepository.findForUpdate(bookingId)
                 .orElseThrow(() -> new ResourceNotFoundException("Booking not found: " + bookingId));
     }
 }

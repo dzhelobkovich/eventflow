@@ -17,3 +17,8 @@ spring:
 
   flyway:
     enabled: true
+
+booking:
+  expiration:
+    fixed-delay-ms: 30000
+    batch-size: 100
